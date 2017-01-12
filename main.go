@@ -1,7 +1,9 @@
 package main
 
 import (
+	"errors"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -10,8 +12,6 @@ import (
 	"time"
 
 	"golang.org/x/net/proxy"
-
-	"github.com/juju/errors"
 )
 
 var (
@@ -87,7 +87,7 @@ func connect(w http.ResponseWriter, r *http.Request) error {
 	}
 	src, _, err := hij.Hijack()
 	if err != nil {
-		return errors.Annotate(err, "hijack")
+		return fmt.Errorf("hijack error:%s", err)
 	}
 
 	defer src.Close()
@@ -100,7 +100,7 @@ func connect(w http.ResponseWriter, r *http.Request) error {
 	dest, err := dialer.Dial("tcp", host)
 	if err != nil {
 		src.Write([]byte("HTTP/1.0 502 ERROR\r\n\r\n"))
-		return errors.Annotate(err, "dial remote")
+		return err
 	}
 	src.Write([]byte("HTTP/1.0 200 OK\r\n\r\n"))
 	go func() {
