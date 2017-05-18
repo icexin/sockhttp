@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "LvdVRE0FqdR68SvVpRkHs1rxhcA=",
+			"path": "golang.org/x/net/proxy",
+			"revision": "71a035914f99bb58fe82eac0f1289f10963d876c",
+			"revisionTime": "2016-09-12T21:59:12Z"
+		}
+	],
+	"rootPath": "github.com/icexin/sockhttp"
+}
