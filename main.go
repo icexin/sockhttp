@@ -102,14 +102,15 @@ func connect(w http.ResponseWriter, r *http.Request) error {
 		src.Write([]byte("HTTP/1.0 502 ERROR\r\n\r\n"))
 		return err
 	}
+	defer dest.Close()
 	src.Write([]byte("HTTP/1.0 200 OK\r\n\r\n"))
 	go func() {
 		io.Copy(dest, src)
-		src.Close()
+		dest.(*net.TCPConn).CloseWrite()
 	}()
 
 	io.Copy(src, dest)
-	dest.Close()
+	src.(*net.TCPConn).CloseWrite()
 	return nil
 }
 
